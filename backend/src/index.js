@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
-const { getClient } = require('./src/database');
-const { translateText, getLanguages } = require('./src/translate');
+const { getClient } = require('./util/database');
+const { translateText, getLanguages } = require('./util/translate');
 
 const app = express();
 
