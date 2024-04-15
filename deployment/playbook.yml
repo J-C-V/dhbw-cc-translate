@@ -70,10 +70,9 @@
         ports:
           - "8080:80"
         env:
-          APP_PORT: "{{ app_port }}"
+          API_CREDENTIALS: "/etc/service-account.json"
           DB_HOST: "{{ redis_host }}"
           DB_PORT: "{{ redis_port }}"
-          API_CREDENTIALS: "/etc/service-account.json"
 
     - name: Run frontend container
       docker_container:
