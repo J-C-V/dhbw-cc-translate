@@ -29,9 +29,13 @@ onBeforeMount(async function() {
     method: 'GET',
   });
 
-  response = await response.json();
-
+  // DEBUG
   console.log(response);
+
+  errorMsg.value = response;
+  hasError.value = true;
+
+  response = await response.json();
 
   if (response.status === "ok") {
     languages.value = response.data;
