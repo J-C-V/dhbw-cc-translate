@@ -9,6 +9,7 @@
     redis_host: ""
     redis_port: "6379"
     credentials_file_path_on_host: "gcp_credentials.json"
+    credentials_directory: "/root/.config/gcloud"
     credentials_file_path_on_vm: "/root/.config/gcloud/gcp_credentials.json"
 
   tasks:
@@ -23,7 +24,7 @@
 
     - name: Create credentials directory
       ansible.builtin.file:
-        path: "{{ credentials_file_path_on_vm }}"
+        path: "{{ credentials_directory }}"
         state: directory
 
     - name: Copy credentials to VM
