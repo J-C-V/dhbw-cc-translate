@@ -1,0 +1,89 @@
+- hosts: all
+  become: true
+  vars:
+    app_repo: "https://github.com/J-C-V/dhbw-cc-translate.git"
+    app_directory: "/app"
+    backend_directory: "/app/backend"
+    frontend_directory: "/app/frontend"
+    redis_host: ""
+    redis_port: "6379"
+    backend_url: ""
+    google_cloud_project_id: "cloud-lecture-415514"
+    credentials_file_path_on_host: "service-account.json"
+    credentials_file_path_on_vm: "/etc/service-account.json"
+
+  tasks:
+    - name: Ensure directory exists for app
+      ansible.builtin.file:
+        path: "/app"
+        state: directory
+
+    - name: Ensure directory exists for API credentials
+      ansible.builtin.file:
+        path: "/etc"
+        state: directory
+
+    - name: Copy credentials to VM
+      ansible.builtin.copy:
+        src: "{{ credentials_file_path_on_host }}"
+        dest: "{{ credentials_file_path_on_vm }}"
+        mode: '0400'
+
+    - name: Install Git and Docker
+      apt:
+        name:
+          - git
+          - docker.io
+          - docker-compose
+        state: present
+        update_cache: yes
+
+    - name: Clone the repository
+      git:
+        repo: "{{ app_repo }}"
+        dest: "{{ app_directory }}"
+        clone: yes
+        update: yes
+
+    - name: Build backend image
+      docker_image:
+        build:
+          path: "{{ backend_directory }}"
+        name: translator-backend
+        source: build
+
+    - name: Build frontend image
+      docker_image:
+        build:
+          path: "{{ frontend_directory }}"
+        name: translator-backend
+        source: build
+
+    - name: Run backend container
+      docker_container:
+        name: translator-backend
+        image: translator-backend
+        state: started
+        restart_policy: unless-stopped
+        exposed_ports:
+          - "80"
+        ports:
+          - "8080:80"
+        env:
+          APP_PORT: "{{ app_port }}"
+          DB_HOST: "{{ redis_host }}"
+          DB_PORT: "{{ redis_port }}"
+          API_CREDENTIALS: "/etc/service-account.json"
+
+    - name: Run frontend container
+      docker_container:
+        name: translator-frontend
+        image: translator-frontend
+        state: started
+        restart_policy: unless-stopped
+        exposed_ports:
+          - "80"
+        ports:
+          - "80:80"
+        env:
+          VITE_BACKEND_URL: "{{ backend_url }}"
