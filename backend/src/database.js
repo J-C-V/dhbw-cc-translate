@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { createClient } = require('redis');
 const crypto = require('crypto');
 
