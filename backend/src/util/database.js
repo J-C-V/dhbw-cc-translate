@@ -4,10 +4,10 @@ const crypto = require('crypto');
 
 async function getClient()
 {
-    const host = process.env.DB_HOST;
-    const port = process.env.DB_PORT;
-    const user = process.env.DB_USER;
-    const password = process.env.DB_PASSWORD;
+    const host = process.env.REDIS_HOST;
+    const port = process.env.REDIS_PORT;
+    const user = process.env.REDIS_USER;
+    const password = process.env.REDIS_PASSWORD;
     let auth = '';
 
     if (user && password) {

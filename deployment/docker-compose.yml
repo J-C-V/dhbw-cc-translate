@@ -2,6 +2,8 @@ services:
   frontend:
     build:
       context: ../frontend
+      args:
+        - VITE_BACKEND_URL=${VITE_BACKEND_URL}
     restart: unless-stopped
     container_name: vue
     ports:
@@ -10,7 +12,26 @@ services:
   backend:
     build:
       context: ../backend
+    depends_on:
+      - db
     restart: unless-stopped
+    environment:
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
     container_name: express
     ports:
       - "8080:80"
+    volumes:
+      - $APPDATA/gcloud/application_default_credentials.json:/root/.config/gcloud/application_default_credentials.json
+    
+  db:
+    image: redis
+    restart: unless-stopped
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - data:/data
+
+volumes:
+  data:
