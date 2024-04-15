@@ -22,7 +22,8 @@ const errorMsg = ref('');
 const infoMsg = "Someone already requested this translation in the past!";
 
 onBeforeMount(async function() {
-  const url = import.meta.env.VITE_BACKEND_URL ?? process.env.VITE_BACKEND_URL;
+  // const url = import.meta.env.VITE_BACKEND_URL ?? process.env.VITE_BACKEND_URL;
+  const url = process.env.VITE_BACKEND_URL;
 
   let response = await fetch(url + '/languages', {
     method: 'GET',
@@ -40,7 +41,8 @@ onBeforeMount(async function() {
 
 async function translate()
 {
-  const url = import.meta.env.VITE_BACKEND_URL ?? process.env.VITE_BACKEND_URL;
+  // const url = import.meta.env.VITE_BACKEND_URL ?? process.env.VITE_BACKEND_URL;
+  const url = process.env.VITE_BACKEND_URL;
 
   if (!selectedLanguage.value || !textOriginal.value) {
     if (!selectedLanguage.value) {
