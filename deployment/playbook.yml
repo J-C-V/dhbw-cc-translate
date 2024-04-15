@@ -21,6 +21,11 @@
         state: present
         update_cache: yes
 
+    - name: Create credentials directory
+      ansible.builtin.file:
+        path: "{{ credentials_file_path_on_vm }}"
+        state: directory
+
     - name: Copy credentials to VM
       ansible.builtin.copy:
         src: "{{ credentials_file_path_on_host }}"
