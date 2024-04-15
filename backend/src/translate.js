@@ -2,17 +2,21 @@ require('dotenv').config();
 const { getHash, getTranslations, storeTranslations } = require('./database');
 const { Translate } = require('@google-cloud/translate').v2;
 
-const credentials = JSON.parse(process.env.API_CREDENTIALS);
+// const credentials = JSON.parse(process.env.API_CREDENTIALS);
 
+/*
 const translate = new Translate({
   credentials: credentials,
-  projectId: credentials.project_id
+  projectId: credentials.project_id,
+});
+*/
+
+const translate = new Translate({
+  keyFile: "service-account.json"
 });
 
 async function getLanguages() 
 {
-  console.log(credentials);
-
   const [languages] = await translate.getLanguages();
 
   return languages;
