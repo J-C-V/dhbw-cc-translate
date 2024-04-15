@@ -11,6 +11,8 @@ const translate = new Translate({
 
 async function getLanguages() 
 {
+  console.log(credentials);
+
   const [languages] = await translate.getLanguages();
 
   return languages;
