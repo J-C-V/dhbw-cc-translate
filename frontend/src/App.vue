@@ -22,8 +22,10 @@ const errorMsg = ref('');
 const infoMsg = "Someone already requested this translation in the past!";
 
 onBeforeMount(async function() {
-  const url = import.meta.env.VITE_BACKEND_URL ?? process.env.VITE_BACKEND_URL;
+  //const url = import.meta.env.VITE_BACKEND_URL ?? process.env.VITE_BACKEND_URL;
   // const url = process.env.VITE_BACKEND_URL;
+
+  const url = "http://34.76.172.113:8080";
 
   let response = await fetch(url + '/languages', {
     method: 'GET',
@@ -32,13 +34,10 @@ onBeforeMount(async function() {
   // DEBUG
   console.log(response);
 
-  errorMsg.value = response;
-  hasError.value = true;
-
   response = await response.json();
 
-  infoMsg = response;
-  hasInfo.value = true;
+  errorMsg.value = response;
+  hasError.value = true;
 
   if (response.status === "ok") {
     languages.value = response.data;
@@ -50,8 +49,10 @@ onBeforeMount(async function() {
 
 async function translate()
 {
-  const url = import.meta.env.VITE_BACKEND_URL ?? process.env.VITE_BACKEND_URL;
+  // const url = import.meta.env.VITE_BACKEND_URL ?? process.env.VITE_BACKEND_URL;
   // const url = process.env.VITE_BACKEND_URL;
+
+  const url = "http://34.76.172.113:8080";
 
   if (!selectedLanguage.value || !textOriginal.value) {
     if (!selectedLanguage.value) {
