@@ -56,7 +56,7 @@
       docker_image:
         build:
           path: "{{ frontend_directory }}"
-        name: translator-backend
+        name: translator-frontend
         source: build
 
     - name: Run backend container
@@ -70,7 +70,7 @@
         ports:
           - "8080:80"
         env:
-          API_CREDENTIALS: "/etc/service-account.json"
+          API_CREDENTIALS: "{{ credentials_file_path_on_vm }}"
           DB_HOST: "{{ redis_host }}"
           DB_PORT: "{{ redis_port }}"
 
