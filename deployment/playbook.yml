@@ -5,30 +5,13 @@
     app_directory: "/app"
     backend_directory: "/app/backend"
     frontend_directory: "/app/frontend"
+    backend_url: ""
     redis_host: ""
     redis_port: "6379"
-    backend_url: ""
-    google_cloud_project_id: "cloud-lecture-415514"
-    credentials_file_path_on_host: "service-account.json"
-    credentials_file_path_on_vm: "/etc/service-account.json"
+    credentials_file_path_on_host: "gcp_credentials.json"
+    credentials_file_path_on_vm: "/root/.config/gcloud/gcp_credentials.json"
 
   tasks:
-    - name: Ensure directory exists for app
-      ansible.builtin.file:
-        path: "/app"
-        state: directory
-
-    - name: Ensure directory exists for API credentials
-      ansible.builtin.file:
-        path: "/etc"
-        state: directory
-
-    - name: Copy credentials to VM
-      ansible.builtin.copy:
-        src: "{{ credentials_file_path_on_host }}"
-        dest: "{{ credentials_file_path_on_vm }}"
-        mode: '0400'
-
     - name: Install Git and Docker
       apt:
         name:
@@ -37,6 +20,17 @@
           - docker-compose
         state: present
         update_cache: yes
+
+    - name: Copy credentials to VM
+      ansible.builtin.copy:
+        src: "{{ credentials_file_path_on_host }}"
+        dest: "{{ credentials_file_path_on_vm }}"
+        mode: '0400'
+
+    - name: Create app directory
+      ansible.builtin.file:
+        path: "{{ app_directory }}"
+        state: directory
 
     - name: Clone the repository
       git:
@@ -56,6 +50,8 @@
       docker_image:
         build:
           path: "{{ frontend_directory }}"
+          args:
+            VITE_BACKEND_URL: "{{ backend_url }}"
         name: translator-frontend
         source: build
 
@@ -65,14 +61,14 @@
         image: translator-backend
         state: started
         restart_policy: unless-stopped
-        exposed_ports:
-          - "80"
         ports:
           - "8080:80"
         env:
-          API_CREDENTIALS: "{{ lookup('file', '/etc/service-account.json') }}"
-          DB_HOST: "{{ redis_host }}"
-          DB_PORT: "{{ redis_port }}"
+          REDIS_HOST: "{{ redis_host }}"
+          REDIS_PORT: "{{ redis_port }}"
+          GOOGLE_APPLICATION_CREDENTIALS: "{{ credentials_file_path_on_vm }}"
+        volumes:
+          - "{{ credentials_file_path_on_vm }}:{{ credentials_file_path_on_vm }}"
 
     - name: Run frontend container
       docker_container:
@@ -80,9 +76,5 @@
         image: translator-frontend
         state: started
         restart_policy: unless-stopped
-        exposed_ports:
-          - "80"
         ports:
           - "80:80"
-        env:
-          VITE_BACKEND_URL: "{{ backend_url }}"
