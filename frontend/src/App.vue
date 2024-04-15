@@ -37,6 +37,9 @@ onBeforeMount(async function() {
 
   response = await response.json();
 
+  infoMsg = response;
+  hasInfo.value = true;
+
   if (response.status === "ok") {
     languages.value = response.data;
   } else {
