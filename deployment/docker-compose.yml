@@ -15,12 +15,12 @@ services:
     depends_on:
       - db
     restart: unless-stopped
-    environment:
-      - REDIS_HOST=${REDIS_HOST}
-      - REDIS_PORT=${REDIS_PORT}
     container_name: express
     ports:
       - "8080:80"
+    environment:
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
     volumes:
       - $APPDATA/gcloud/application_default_credentials.json:/root/.config/gcloud/application_default_credentials.json
     
