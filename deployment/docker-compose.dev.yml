@@ -14,7 +14,9 @@ services:
     container_name: express
     ports:
       - "8080:80"
-
+    volumes:
+      - $APPDATA/gcloud/application_default_credentials.json:/root/.config/gcloud/application_default_credentials.json
+    
   db:
     image: redis
     restart: unless-stopped
