@@ -1,5 +1,5 @@
 import './assets/main.css';
-import "primeflex/primeflex.css";
+import "primeflex/primeflex.scss";
 import PrimeVue from 'primevue/config';
 import 'primevue/resources/themes/aura-light-green/theme.css';
 import { createApp } from 'vue';
