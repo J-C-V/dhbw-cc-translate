@@ -1,6 +1,6 @@
 require('dotenv').config();
-const { getHash, getTranslations, storeTranslations } = require('./database');
 const { Translate } = require('@google-cloud/translate').v2;
+const { getHash, getTranslations, storeTranslations } = require('./database');
 
 const translate = new Translate();
 
@@ -11,10 +11,10 @@ async function getLanguages()
   return languages;
 }
 
-async function translateText(client, text, target) 
+async function translateText(redis, text, target) 
 {
   const hash = getHash(text, target);
-  const existingTranslations = await getTranslations(client, hash);
+  const existingTranslations = await getTranslations(redis, hash);
 
   if (existingTranslations) {
     return {
@@ -29,7 +29,7 @@ async function translateText(client, text, target)
     translations = translations.join('');
   }
 
-  storeTranslations(client, hash, translations);
+  storeTranslations(redis, hash, translations);
 
   return {
     'translations': translations,
