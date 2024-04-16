@@ -1,5 +1,6 @@
 FROM node as builder
 
+# VITE needs the environment variables before the build process
 ARG VITE_BACKEND_URL
 ENV VITE_BACKEND_URL=${VITE_BACKEND_URL}
 

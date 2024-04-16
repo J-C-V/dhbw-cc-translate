@@ -29,9 +29,6 @@ onBeforeMount(async function() {
       method: 'GET',
     });
 
-    // DEBUG
-    console.log(response);
-
     response = await response.json();
 
     if (response.status === "ok") {
@@ -42,7 +39,7 @@ onBeforeMount(async function() {
       throw Error(response);
     }
   } catch (e) {
-    errorMsg.value = "Data couldn' be loaded. Please try again later.";
+    errorMsg.value = "Languages couldn' be loaded. Please try again later.";
     hasError.value = true;
 
     console.log(e);
@@ -67,9 +64,6 @@ async function translate()
       }),
     });
 
-    // DEBUG
-    console.log(response);
-
     response = await response.json();
 
     if (response.status === "ok") {
@@ -90,13 +84,16 @@ async function translate()
       throw Error(response);
     }
   } catch (e) {
-    errorMsg.value = "Data couldn' be loaded. Please try again later.";
+    errorMsg.value = "Translation failed. Please try again later.";
     hasError.value = true;
 
     console.log(e);
   }
 }
 
+/**
+ * Validate if text and target is set.
+ */
 function validateTranslationRequest()
 {
   if (!selectedLanguage.value || !textOriginal.value) {
