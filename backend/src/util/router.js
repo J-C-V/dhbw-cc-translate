@@ -1,12 +1,12 @@
-const { getClient } = require('database');
-const { translateText, getLanguages } = require('translate');
+const { getClient } = require('./database');
+const { translateText, getLanguages } = require('./translate');
 const ErrorResponse = require('../classes/ErrorResponse');
 const SuccessResponse = require('../classes/SuccessResponse');
 
 /**
  * Init routes and route logic.
  */
-async function initRouter()
+async function initRouter(app)
 {
     const redis = await getClient();
 

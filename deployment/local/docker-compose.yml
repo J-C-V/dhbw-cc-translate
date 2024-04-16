@@ -1,7 +1,7 @@
 services:
   frontend:
     build:
-      context: ../frontend
+      context: ../../frontend
       args:
         - VITE_BACKEND_URL=${VITE_BACKEND_URL}
     restart: unless-stopped
@@ -11,7 +11,7 @@ services:
 
   backend:
     build:
-      context: ../backend
+      context: ../../backend
     depends_on:
       - db
     restart: unless-stopped
