@@ -46,6 +46,9 @@ onBeforeMount(async function() {
   }
 });
 
+/**
+ * Translate text to the specified target language.
+ */
 async function translate()
 {
   if (!validateTranslationRequest()) {
@@ -92,7 +95,7 @@ async function translate()
 }
 
 /**
- * Validate if text and target is set.
+ * Validate if text and target language is set.
  */
 function validateTranslationRequest()
 {
