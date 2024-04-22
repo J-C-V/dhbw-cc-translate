@@ -65,7 +65,7 @@ resource "google_compute_instance" "gcp-vm2" {
   }
 
   service_account {
-    email  = "<<<EMAIL-OF-SERVICE-ACCOUNT>>>@developer.gserviceaccount.com"
+    email  = "<<<EMAIL-OF-SERVICE-ACCOUNT>>>"
     scopes = ["https://www.googleapis.com/auth/cloud-platform"]
   }
 
