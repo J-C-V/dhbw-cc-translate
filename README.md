@@ -32,7 +32,7 @@ Run `git clone https://github.com/J-C-V/dhbw-cc-translate.git` to get the curren
 3. Run `terraform init`
 4. Run `terraform apply -auto-approve`
 5. Take note of the output parameters vm_ip and redis_ip - We'll need them later for Ansible
-6. The VM instance should be running now!
+6. The VM instance is now running
 
 ## Ansible
 
@@ -42,11 +42,11 @@ Run `git clone https://github.com/J-C-V/dhbw-cc-translate.git` to get the curren
 4. Edit `inventory.ini` and replace the placeholders `VM-IP` and `ANSIBLE-USER` with their corresponding values
 5. Create the file `gcp_credentials.json` in the Ansible directory with the previously created Service Account Key
 6. Run `ansible-playbook -i inventory.ini playbook.yml`
-7. The application is now running on your VM instance!
+7. The application is now running on your VM instance
 
 ## Firewall
 
 If you can't access the application in your browser, you need to set up your firewall in your Google account:
 
 1. Firewall -> VPC-Network -> Firewall -> CREATE FIREWALL RULE -> ALL INSTANCES ON THE NETWORK -> Source: `0.0.0.0/0`, Ports: `tcp:80, 8080`
-2. The web client should now be accessible under `http://VM-IP` and the service under `http://VM_IP:8080`!
+2. The web client should now be accessible under `http://VM-IP` and the service under `http://VM_IP:8080`
